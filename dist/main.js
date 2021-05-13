@@ -97,6 +97,7 @@
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _cars__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./cars */ "./src/cars.js");
 // DON'T CHANGE THIS LINE
+const myBadAssGarage = "kenns-garage";
 document.querySelector("#garage-name").innerText = myBadAssGarage.replace(
   /-/g,
   " "
