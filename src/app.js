@@ -1,4 +1,5 @@
 // DON'T CHANGE THIS LINE
+const myBadAssGarage = "kenns-garage";
 document.querySelector("#garage-name").innerText = myBadAssGarage.replace(
   /-/g,
   " "
