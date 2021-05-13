@@ -1,17 +1,27 @@
-import { addCar, fetchCars } from './car';
-
-// TODO: give a badass name to your garage
-const myBadAssGarage = "yarn-garage";
-
 // DON'T CHANGE THIS LINE
-document.querySelector("#garage-name").innerText = myBadAssGarage.replace(/-/g, " ");
+document.querySelector("#garage-name").innerText = myBadAssGarage.replace(
+  /-/g,
+  " "
+);
 // //////////////////////
 
-// element selection
-const button = document.querySelector("#submit-btn");
+import { fetchCars, postCar } from "./cars";
 
-// function calls
 fetchCars();
 
-// event listeners
-button.addEventListener("click", addCar);
+const carBrand = document.querySelector("#brand");
+const carModel = document.querySelector("#model");
+const carPlate = document.querySelector("#plate");
+const carOwner = document.querySelector("#owner");
+const form = document.querySelector("form");
+
+form.addEventListener("submit", (event) => {
+  event.preventDefault();
+  const carData = {
+    brand: carBrand.value,
+    model: carModel.value,
+    plate: carPlate.value,
+    owner: carOwner.value,
+  };
+  postCar(carData);
+});
