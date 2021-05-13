@@ -95,52 +95,60 @@
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _car__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./car */ "./src/car.js");
-
-
-// TODO: give a badass name to your garage
-const myBadAssGarage = "yarn-garage";
-
+/* harmony import */ var _cars__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./cars */ "./src/cars.js");
 // DON'T CHANGE THIS LINE
-document.querySelector("#garage-name").innerText = myBadAssGarage.replace(/-/g, " ");
+document.querySelector("#garage-name").innerText = myBadAssGarage.replace(
+  /-/g,
+  " "
+);
 // //////////////////////
 
-// element selection
-const button = document.querySelector("#submit-btn");
 
-// function calls
-Object(_car__WEBPACK_IMPORTED_MODULE_0__["fetchCars"])();
 
-// event listeners
-button.addEventListener("click", _car__WEBPACK_IMPORTED_MODULE_0__["addCar"]);
+Object(_cars__WEBPACK_IMPORTED_MODULE_0__["fetchCars"])();
+
+const carBrand = document.querySelector("#brand");
+const carModel = document.querySelector("#model");
+const carPlate = document.querySelector("#plate");
+const carOwner = document.querySelector("#owner");
+const form = document.querySelector("form");
+
+form.addEventListener("submit", (event) => {
+  event.preventDefault();
+  const carData = {
+    brand: carBrand.value,
+    model: carModel.value,
+    plate: carPlate.value,
+    owner: carOwner.value,
+  };
+  Object(_cars__WEBPACK_IMPORTED_MODULE_0__["postCar"])(carData);
+});
 
 
 /***/ }),
 
-/***/ "./src/car.js":
-/*!********************!*\
-  !*** ./src/car.js ***!
-  \********************/
-/*! exports provided: addCar, fetchCars */
+/***/ "./src/cars.js":
+/*!*********************!*\
+  !*** ./src/cars.js ***!
+  \*********************/
+/*! exports provided: fetchCars, postCar */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "addCar", function() { return addCar; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fetchCars", function() { return fetchCars; });
-const myBadAssGarage = "yarn-garage";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "postCar", function() { return postCar; });
+const myBadAssGarage = "kenns-garage";
+const url = `https://wagon-garage-api.herokuapp.com/${myBadAssGarage}/cars`;
 
 const carsList = document.querySelector(".cars-list");
-const plate = document.querySelector("#plate");
-const brand = document.querySelector("#brand");
-const owner = document.querySelector("#owner");
-const model = document.querySelector("#model");
 
-const displayCars = (cars) => {
+const displayCars = (data) => {
   carsList.innerHTML = "";
-  cars.forEach((car) => {
-    const newCar = `
-      <div class="car">
+  data.forEach((car) => {
+    carsList.insertAdjacentHTML(
+      "beforeend",
+      `<div class="car">
         <div class="car-image">
           <img src="http://loremflickr.com/280/280/${car.brand} ${car.model}" />
         </div>
@@ -149,13 +157,13 @@ const displayCars = (cars) => {
           <p><strong>Owner:</strong>${car.owner}</p>
           <p><strong>Plate:</strong>${car.plate}</p>
         </div>
-      </div>`;
-    carsList.insertAdjacentHTML("beforeend", newCar);
+      </div>
+      `
+    );
   });
 };
 
 const fetchCars = () => {
-  const url = `https://wagon-garage-api.herokuapp.com/${myBadAssGarage}/cars`;
   fetch(url)
     .then(response => response.json())
     .then((data) => {
@@ -164,14 +172,11 @@ const fetchCars = () => {
     });
 };
 
-const postACar = (car) => {
-  const url = `https://wagon-garage-api.herokuapp.com/${myBadAssGarage}/cars`;
+const postCar = (carData) => {
   fetch(url, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(car)
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(carData),
   })
     .then(response => response.json())
     .then((data) => {
@@ -179,19 +184,6 @@ const postACar = (car) => {
       fetchCars();
     });
 };
-
-const addCar = (event) => {
-  event.preventDefault();
-  // 3. Make car object and post it to the API
-  const car = {
-    plate: plate.value,
-    brand: brand.value,
-    model: model.value,
-    owner: owner.value,
-  };
-  postACar(car);
-};
-
 
 
 
